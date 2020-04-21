@@ -51,8 +51,12 @@ int initProcess(int execTime){
 		char printkBuffer[40];
 		syscall(GETTIME, &startSec, &startNSec);
 		
-		for(int i=0 ; i<execTime ; i++)
+		for(int i=0 ; i<execTime ; i++){
+			if(i % 100 == 0){
+				fprintf(stderr, "pid = %d run %d unit time\n", getpid(), i);
+			}
 			unitTime();
+		}
 
 		syscall(GETTIME, &finishSec, &finishNSec);
 		sprintf(printkBuffer, "[Project1] %d %lu.%lu %lu.%lu", getpid(), startSec, startNSec, finishSec, finishNSec);

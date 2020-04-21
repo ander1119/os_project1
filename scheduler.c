@@ -52,8 +52,12 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 		}
 
 		unitTime();
-		if(runningIndex != -1)
+		if(runningIndex != -1){
 			processList[runningIndex].execTime--;
+			if(processList[runningIndex].execTime % 100 == 0){
+				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].execTime);
+			}
+		}
 		currentTime++;
 	}	
 }
