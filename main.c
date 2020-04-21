@@ -8,7 +8,7 @@
 #include <string.h>
 #include "process.h"
 #include "scheduler.h"
-#define maxChild 100;
+#define maxChild 100
 
 int cmpReadytime(const void *a, const void *b){
 	return ((struct Process *)a)->readyTime < ((struct Process *)b)->readyTime;
@@ -29,7 +29,7 @@ int main(){
 	for(int i=0 ; i<processNum ; i++)
 		scanf("%s%d%d", processList[i].processName, &processList[i].readyTime, &processList[i].execTime);
 	
-	qsort(processList, processNum, cmpReadytime);
+	qsort(processList, processNum, sizeof(struct Process), cmpReadytime);
 
 	schedule(processList, processNum, schedulingPolicy);
 	

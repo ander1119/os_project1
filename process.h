@@ -16,7 +16,7 @@ struct Process{
 	int execTime;
 	int pid;
 	int status;
-}
+};
 
 void unitTime();
 
