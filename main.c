@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "process.h"
 #include "scheduler.h"
 #define maxChild 100
 

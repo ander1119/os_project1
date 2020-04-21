@@ -4,6 +4,7 @@
 #include <sched.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "process.h"
 
 #define UNINITIAL 0
 #define WAIT 1
