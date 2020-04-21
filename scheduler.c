@@ -54,28 +54,30 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 		unitTime();
 		if(runningIndex != -1){
 			processList[runningIndex].execTime--;
+#ifdef DEBUG
 			if(processList[runningIndex].execTime % 100 == 0){
 				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].execTime);
 			}
+#endif
 		}
 		currentTime++;
 	}	
 }
 
 int nextProcess(struct Process processList[], int processNum, int schedulingPolicy){
-	if(schedulingPolicy == 1){		//FIFO
+	if(schedulingPolicy == FIFO){		/
 		for(int i=0 ; i<processNum ; i++){
-			if(processList[i].status == UNINITIAL)
+			if(processList[i].status == WAIT)
 				return i;
 		}
 	}
-	else if(schedulingPolicy == 2){	//RR
+	else if(schedulingPolicy == RR){
 		return -1;
 	}
-	else if(schedulingPolicy == 3){	//SJF
+	else if(schedulingPolicy == SJF){	
 		return -1;
 	}
-	else if(schedulingPolicy == 4){	//PSJF
+	else if(schedulingPolicy == PSJF){	
 		return -1;
 	}
 	return -1;
