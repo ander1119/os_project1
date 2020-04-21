@@ -28,6 +28,10 @@ int main(){
 	
 	qsort(processList, processNum, sizeof(struct Process), cmpReadytime);
 
+	fprintf(stderr, "After sort:\n");
+	for(int i=0 ; i<processNum ; i++)
+		fprintf(stderr, "%s %d %d\n", processList[i].processName, processList[i].readyTime, processList[i].execTime);
+
 	schedule(processList, processNum, schedulingPolicy);
 	
 	return 0;
