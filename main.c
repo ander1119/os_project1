@@ -1,8 +1,5 @@
 #define _GNU_SOURCE
-#include <sys/types.h>
-#include <sys/syscall.h>
 #include <unistd.h>
-#include <sched.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,10 +17,10 @@ int main(){
 	struct Process processList[maxChild];
 	scanf("%s%d", buf, &processNum);
 	
-	if(strcmp(buf, "FIFO") == 0) schedulingPolicy = 1;
-	else if(strcmp(buf, "RR") == 0) schedulingPolicy = 2;
-	else if(strcmp(buf, "SJF") == 0) schedulingPolicy = 3;
-	else if(strcmp(buf, "PSJF") == 0) schedulingPolicy = 4;
+	if(strcmp(buf, "FIFO") == 0) schedulingPolicy = FIFO;
+	else if(strcmp(buf, "RR") == 0) schedulingPolicy = RR;
+	else if(strcmp(buf, "SJF") == 0) schedulingPolicy = SJF;
+	else if(strcmp(buf, "PSJF") == 0) schedulingPolicy = PSJF;
 
 	for(int i=0 ; i<processNum ; i++)
 		scanf("%s%d%d", processList[i].processName, &processList[i].readyTime, &processList[i].execTime);

@@ -10,6 +10,11 @@
 #define WAIT 1
 #define DONED 2
 
-void schedule(struct Process processList[], int processNum, int schedulingPolicy);
+#define FIFO 1
+#define RR 2
+#define SJF 3
+#define PSJF 4
 
-int nextProcess(struct Process processList[], int processNum, int schedulingPolicy);
+void schedule(struct Process *processList, int processNum, int schedulingPolicy);
+
+int nextProcess(struct Process *processList, int processNum, int schedulingPolicy);
