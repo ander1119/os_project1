@@ -1,7 +1,4 @@
 #define _GNU_SOURCE
-#include <sys/types.h>
-#include <sys/syscall.h>
-#include <unistd.h>
 #include <sched.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,7 +11,7 @@ static int runningIndex = -1; 	//which process is running
 
 static int finishNum = 0; 		//how many process has doned
 
-void schedule(struct Process *processList, int processNum, int schedulingPolicy){
+void schedule(struct Process processList[], int processNum, int schedulingPolicy){
 	for(int i=0 ; i<processNum ; i++) processList[i].status = UNINITIAL; //the process isn't initial yet
 
 	assignCPU(getpid(), schedulerCPU);	//assign scheduler unique CPU
@@ -58,7 +55,7 @@ void schedule(struct Process *processList, int processNum, int schedulingPolicy)
 	}	
 }
 
-int nextProcess(struct Process *processList, int processNum, int schedulingPolicy){
+int nextProcess(struct Process processList[], int processNum, int schedulingPolicy){
 	if(schedulingPolicy == 1){		//FIFO
 		for(int i=0 ; i<processNum ; i++){
 			if(processList[i].status == UNINITIAL)

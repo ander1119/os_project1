@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "scheduler.h"
+#include "process.h"
 #define maxChild 100
 
 int cmpReadytime(const void *a, const void *b){

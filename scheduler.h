@@ -1,10 +1,5 @@
-#include <sys/types.h>
-#include <sys/syscall.h>
-#include <unistd.h>
-#include <sched.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "process.h"
+#ifndef _SCHEDULER_H
+#define _SCHEDULER_H
 
 #define UNINITIAL 0
 #define WAIT 1
@@ -15,6 +10,8 @@
 #define SJF 3
 #define PSJF 4
 
-void schedule(struct Process *processList, int processNum, int schedulingPolicy);
+void schedule(struct Process processList[], int processNum, int schedulingPolicy);
 
-int nextProcess(struct Process *processList, int processNum, int schedulingPolicy);
+int nextProcess(struct Process processList[], int processNum, int schedulingPolicy);
+
+#endif

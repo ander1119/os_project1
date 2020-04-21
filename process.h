@@ -1,9 +1,5 @@
-#include <sys/types.h>
-#include <sys/syscall.h>
-#include <unistd.h>
-#include <sched.h>
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef _PROCESS_H
+#define _PROCESS_H
 
 #define schedulerCPU 0
 #define processCPU 1
@@ -28,3 +24,4 @@ void setHighPriority(int pid);
 
 void setLowPriority(int pid);
 
+#endif
