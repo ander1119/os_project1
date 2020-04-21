@@ -1,6 +1,8 @@
 #ifndef _SCHEDULER_H
 #define _SCHEDULER_H
 
+#include "process.h"
+
 #define UNINITIAL 0
 #define WAIT 1
 #define DONED 2
