@@ -36,7 +36,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 		}
 
 		if(runningIndex != -1 && processList[runningIndex].execTime == 0){ //the running process ends
-			wait(processList[runningIndex].pid, NULL);
+			waitpid(processList[runningIndex].pid, NULL, 0);
 			printf("%s %d\n", processList[runningIndex].processName, processList[runningIndex].pid);
 			processList[runningIndex].status = DONED;
 			runningIndex = -1;
