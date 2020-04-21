@@ -1,16 +1,65 @@
-#include <stdio.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#define _GNU_SOURCE
 #include <sys/types.h>
-#include <sys/stat.h>
+#include <sys/syscall.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <fcntl.h>
+#include <sched.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "process.h"
 
-int main(int argc, char **argv){
-	char processName[32] = argv[1];
-	int readyTime = atoi(argv[2]);
-	int execTime = atoi(argv[3]);
-	return 0;
+void unitTime(){
+	volatile unsigned long i; 
+	for(i=0;i<1000000UL;i++);
+}
+
+void assignCPU(int pid, int coreIndex){
+	cpu_set_t mask;
+	CPU_ZERO(&mask);
+	CPU_SET(coreIndex, &mask);	//assign specific core into mask
+
+	if (sched_setaffinity(0, sizeof(mask), &mask) == -1){
+		fprintf(stderr, "can't set CPU affinity/n");
+		exit(0);
+	}
+
+	return;
+}
+
+void setHighPriority(int pid){
+	struct sched_param param;
+	param.sched_priority = 0;
+	if(sched_scheduler(pid, SCHED_OTHER, &param) < 0){
+		fprintf(stderr, "can't set pid = %d high priority\n", pid);
+		exit(0);
+	}
+}
+
+void setLowPriority(int pid){
+	struct sched_param param;
+	param.sched_priority = 0;
+	if(sched_scheduler(pid, SCHED_IDLE, &param) < 0){
+		fprintf(stderr, "can't set pid = %d low priority\n", pid);
+		exit(0);
+	}
+}
+
+int initProcess(int execTime){
+	int pid;
+	if((pid = fork()) == 0){
+		unsigned long startSec, startNSec, finishSec, finishNSec;
+		char printkBuffer[40];
+		syscall(GETTIME, &startSec, &startNSec);
+		
+		for(int i=0 ; i<execTime ; i++)
+			unitTime();
+
+		syscall(GETTIME, &finishSec, &finishNSec);
+		sprintf(printkBuffer, "[Project1] %d %lu.%lu %lu.%lu", getpid(), startSec, startNSec, finishSec, finishNSec);
+		syscall(PRINTK, printkBuffer, strlen(printkBuffer));
+		exit(0);
+	}
+	else{
+		assignCPU(pid, processCPU);
+		return pid;
+	}
 }
