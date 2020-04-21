@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <sched.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include "process.h"
 

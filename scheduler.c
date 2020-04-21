@@ -1,7 +1,9 @@
 #define _GNU_SOURCE
 #include <sched.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include "scheduler.h"
 #include "process.h"
 
@@ -71,4 +73,5 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 	else if(schedulingPolicy == 4){	//PSJF
 		return -1;
 	}
+	return -1;
 }
