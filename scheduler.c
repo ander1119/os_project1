@@ -31,8 +31,9 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 				processList[i].status = WAIT;
 				setLowPriority(processList[i].pid);
 			}
-			else if(processList[i].readyTime > currentTime)
+			else if(processList[i].readyTime > currentTime){
 				break;
+			}
 		}
 
 		if(runningIndex != -1 && processList[runningIndex].execTime == 0){ //the running process ends
