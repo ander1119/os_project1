@@ -1,7 +1,7 @@
-CFLAG := -Wall -std=c99
-DEBUG ?= 
-
-CFLAG += DEBUG
+ifdef DEBUG
+	CFLAG = -DDEBUG -WALL -std=c99
+endif
+CFLAG ?= -WALL -std=c99
 
 main: main.o scheduler.o process.o
 	gcc $(CFLAG) main.o scheduler.o process.o -o main
