@@ -50,7 +50,9 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 				setLowPriority(processList[runningIndex].pid);
 			runningIndex = nextIndex;
 		}
-
+#ifdef DEBUG
+		fprintf(stderr, "runningIndex = %d\n", runningIndex);
+#endif
 		unitTime();
 		if(runningIndex != -1){
 			processList[runningIndex].execTime--;
@@ -65,7 +67,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 }
 
 int nextProcess(struct Process processList[], int processNum, int schedulingPolicy){
-	if(schedulingPolicy == FIFO){		/
+	if(schedulingPolicy == FIFO){		
 		for(int i=0 ; i<processNum ; i++){
 			if(processList[i].status == WAIT)
 				return i;
