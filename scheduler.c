@@ -51,17 +51,21 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 				setLowPriority(processList[runningIndex].pid);
 			runningIndex = nextIndex;
 		}
+/*
 #ifdef DEBUG
 		fprintf(stderr, "runningIndex = %d\n", runningIndex);
 #endif
+*/
 		unitTime();
 		if(runningIndex != -1){
 			processList[runningIndex].execTime--;
+/*
 #ifdef DEBUG
 			if(processList[runningIndex].execTime % 100 == 0){
 				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].execTime);
 			}
 #endif
+*/
 		}
 		currentTime++;
 	}	
