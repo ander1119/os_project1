@@ -72,7 +72,9 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 }
 
 int nextProcess(struct Process processList[], int processNum, int schedulingPolicy){
-	if(schedulingPolicy == FIFO){		
+	if(schedulingPolicy == FIFO){
+		if(runningIndex != -1)
+			return runningIndex;		
 		for(int i=0 ; i<processNum ; i++){
 			if(processList[i].status == WAIT)
 				return i;
