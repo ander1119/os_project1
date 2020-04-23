@@ -36,13 +36,15 @@ void setHighPriority(int pid, int priority){
 }
 
 void setLowPriority(int pid){
+	if(sched_yield() != 0){
+		fprintf(stderr, "yield not success\n");
+	}
 	struct sched_param param;
 	param.sched_priority = 10;
 	if(sched_setscheduler(pid, SCHED_RR, &param) < 0){
 		fprintf(stderr, "can't set pid = %d low priority\n", pid);
 		exit(0);
 	}
-	sched_yield();
 }
 
 int initProcess(int execTime){
