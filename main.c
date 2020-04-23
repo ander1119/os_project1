@@ -8,7 +8,10 @@
 #define maxChild 100
 
 int cmpReadytime(const void *a, const void *b){
-	return ((struct Process *)a)->readyTime > ((struct Process *)b)->readyTime;
+	struct Process *p1 = (struct Process *)a;
+	struct Process *p2 = (struct Process *)b;
+	if(p1->readyTime == p2->readyTime) return p1->execTime > p2->execTime;
+	else return p1->readyTime > p2->readyTime;
 }
 
 int main(){
