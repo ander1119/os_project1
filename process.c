@@ -54,13 +54,13 @@ int initProcess(int execTime){
 		syscall(GETTIME, &startSec, &startNSec);
 		
 		for(int i=0 ; i<execTime ; i++){
-/*
+
 #ifdef DEBUG
 			if(i % 100 == 0){
 				fprintf(stderr, "pid = %d run %d unit time\n", getpid(), i);
 			}
 #endif
-*/
+
 			unitTime();
 		}
 		syscall(GETTIME, &finishSec, &finishNSec);
