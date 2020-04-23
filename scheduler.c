@@ -19,7 +19,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 
 	assignCPU(getpid(), schedulerCPU);	//assign scheduler unique CPU
 
-	setHighPriority(getpid());			//set scheduler priority higher than others
+	setHighPriority(getpid(), 90);			//set scheduler priority higher than others
 
 	while(1){
 		if(finishNum == processNum) 	//all processes end
@@ -47,7 +47,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 
 		int nextIndex = nextProcess(processList, processNum, schedulingPolicy);
 		if(nextIndex != -1 && runningIndex != nextIndex){
-			setHighPriority(processList[nextIndex].pid);
+			setHighPriority(processList[nextIndex].pid, 80);
 			if(runningIndex != -1)
 				setLowPriority(processList[runningIndex].pid);
 			runningIndex = nextIndex;
