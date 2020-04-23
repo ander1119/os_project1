@@ -28,9 +28,9 @@ void assignCPU(int pid, int coreIndex){
 
 void setHighPriority(int pid){
 	struct sched_param param;
-	param.sched_priority = 0;
-	sched_yield();
-	if(sched_setscheduler(pid, SCHED_OTHER, &param) < 0){
+	param.sched_priority = sched_get_priority_max(SCHED_FIFO);
+	//sched_yield();
+	if(sched_setscheduler(pid, SCHED_FIFO, &param) < 0){
 		fprintf(stderr, "can't set pid = %d high priority\n", pid);
 		exit(0);
 	}
@@ -38,9 +38,9 @@ void setHighPriority(int pid){
 
 void setLowPriority(int pid){
 	struct sched_param param;
-	param.sched_priority = 0;
-	sched_yield();
-	if(sched_setscheduler(pid, SCHED_IDLE, &param) < 0){
+	param.sched_priority = sched_get_priority_min(SCHED_FIFO);
+	//sched_yield();
+	if(sched_setscheduler(pid, SCHED_FIFO, &param) < 0){
 		fprintf(stderr, "can't set pid = %d low priority\n", pid);
 		exit(0);
 	}
