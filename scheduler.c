@@ -95,14 +95,15 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 		}
 	}
 	else if(schedulingPolicy == SJF){
-		if(runningIndex != -1)
+		if(runningIndex != -1){
 			return runningIndex;
+		}
 		else{
 			int shortestJobIndex = -1;
 			for(int i=0 ; i<processNum ; i++){
 				if(shortestJobIndex == -1 && processList[i].status == WAIT)
 					shortestJobIndex = i;
-				else if(processList[i].status == WAIT && processList[i].leftExecTime < processList[shortestJobIndex].leftExecTime){
+				else if(processList[i].status == WAIT && processList[i].execTime < processList[shortestJobIndex].execTime){
 					shortestJobIndex = i;
 				}
 			}
