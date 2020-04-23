@@ -52,6 +52,7 @@ void setLowPriority(int pid, int whichCPU){
 int initProcess(int execTime){
 	int pid;
 	if((pid = fork()) == 0){
+		assignCPU(getpid(), processCPU);
 		unsigned long startSec, startNSec, finishSec, finishNSec;
 		char printkBuffer[40];
 		syscall(GETTIME, &startSec, &startNSec);
