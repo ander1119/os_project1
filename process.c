@@ -63,7 +63,7 @@ int initProcess(int execTime){
 		}
 
 		syscall(GETTIME, &finishSec, &finishNSec);
-		sprintf(printkBuffer, "[Project1] %d %lu.%lu %lu.%lu", getpid(), startSec, startNSec, finishSec, finishNSec);
+		sprintf(printkBuffer, "[Project1] %d %9lu.%09lu %9lu.%09lu", getpid(), startSec, startNSec, finishSec, finishNSec);
 		syscall(PRINTK, printkBuffer, 100);
 		exit(0);
 	}
