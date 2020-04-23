@@ -53,16 +53,13 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 			runningIndex = nextIndex;
 		}
 
-#ifdef DEBUG
-		fprintf(stderr, "runningIndex = %d\n", runningIndex);
-#endif
-		
 		unitTime();
 		if(runningIndex != -1){
 			processList[runningIndex].leftExecTime--;
 
 #ifdef DEBUG
 			if(processList[runningIndex].leftExecTime % 100 == 0){
+				fprintf(stderr, "runningIndex = %d\n", runningIndex);
 				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].leftExecTime);
 			}
 #endif
