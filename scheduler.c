@@ -59,8 +59,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 
 #ifdef DEBUG
 			if(processList[runningIndex].leftExecTime % 100 == 0){
-				fprintf(stderr, "runningIndex = %d\n", runningIndex);
-				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].leftExecTime);
+				fprintf(stderr, "runningIndex = %d, process pid = %d, left %d execution sec\n", runningIndex, processList[runningIndex].pid, processList[runningIndex].leftExecTime);
 			}
 #endif
 
@@ -87,10 +86,11 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 			return -1;
 		}
 		else if(processList[runningIndex].execTime - processList[runningIndex].leftExecTime % 500 == 0){
+			int nextIndex = (runningIndex + 1) % processNum;
 			while(1){
-				runningIndex = (runningIndex + 1) % processNum;
-				if(processList[runningIndex].status == WAIT)
-					return runningIndex;
+				if(processList[nextIndex].status == WAIT)
+					return nextIndex;
+				nextIndex = (nextIndex + 1) % processNum;
 			}
 		}
 	}
