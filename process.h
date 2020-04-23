@@ -21,8 +21,8 @@ void assignCPU(int pid, int coreIndex);
 
 int initProcess(int execTime);
 
-void setHighPriority(int pid, int priority);
+void setHighPriority(int pid, int whichCPU);
 
-void setLowPriority(int pid);
+void setLowPriority(int pid, int whichCPU);
 
 #endif

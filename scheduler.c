@@ -17,9 +17,7 @@ static int finishNum = 0; 		//how many process has doned
 void schedule(struct Process processList[], int processNum, int schedulingPolicy){
 	for(int i=0 ; i<processNum ; i++) processList[i].status = UNINITIAL; //the process isn't initial yet
 
-	assignCPU(getpid(), schedulerCPU);	//assign scheduler unique CPU
-
-	setHighPriority(getpid(), 90);			//set scheduler priority higher than others
+	setHighPriority(getpid(), schedulerCPU);	//set scheduler priority higher than others
 
 	while(1){
 		if(finishNum == processNum) 	//all processes end
@@ -30,7 +28,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 				processList[i].pid = initProcess(processList[i].execTime);
 				processList[i].status = WAIT;
 				processList[i].leftExecTime = processList[i].execTime;
-				setLowPriority(processList[i].pid);
+				setLowPriority(processList[i].pid, processCPU);
 			}
 			else if(processList[i].readyTime > currentTime){
 				break;
@@ -47,9 +45,9 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 
 		int nextIndex = nextProcess(processList, processNum, schedulingPolicy);
 		if(nextIndex != -1 && runningIndex != nextIndex){
-			setHighPriority(processList[nextIndex].pid, 80);
+			setHighPriority(processList[nextIndex].pid, processCPU);
 			if(runningIndex != -1)
-				setLowPriority(processList[runningIndex].pid);
+				setLowPriority(processList[runningIndex].pid, processCPU);
 			runningIndex = nextIndex;
 		}
 
