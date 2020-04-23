@@ -55,7 +55,7 @@ int initProcess(int execTime){
 
 #ifdef DEBUG
 			if(i % 100 == 0){
-				fprintf(stderr, "pid = %d run %d unit time\n", getpid(), i);
+				fprintf(stderr, "pid = %d run %d unit time on %d cpu\n", getpid(), i, sched_getcpu());
 			}
 #endif
 
