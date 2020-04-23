@@ -29,14 +29,14 @@ void assignCPU(int pid, int coreIndex){
 void setHighPriority(int pid, int whichCPU){
 	assignCPU(getpid(), whichCPU);
 	struct sched_param param;
-	param.sched_priority = priority;
+	param.sched_priority = 80;
 	if(sched_setscheduler(pid, SCHED_RR, &param) < 0){
 		fprintf(stderr, "can't set pid = %d high priority\n", pid);
 		exit(0);
 	}
 }
 
-void setLowPriority(int pid, whichCPU){
+void setLowPriority(int pid, int whichCPU){
 	assignCPU(getpid(), whichCPU);
 	if(sched_yield() != 0){
 		fprintf(stderr, "yield not success\n");
