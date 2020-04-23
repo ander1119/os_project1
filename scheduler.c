@@ -29,6 +29,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 			if(processList[i].readyTime == currentTime){
 				processList[i].pid = initProcess(processList[i].execTime);
 				processList[i].status = WAIT;
+				processList[i].leftExecTime = processList[i].execTime;
 				setLowPriority(processList[i].pid);
 			}
 			else if(processList[i].readyTime > currentTime){
@@ -36,7 +37,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 			}
 		}
 
-		if(runningIndex != -1 && processList[runningIndex].execTime == 0){ //the running process ends
+		if(runningIndex != -1 && processList[runningIndex].leftExecTime == 0){ //the running process ends
 			waitpid(processList[runningIndex].pid, NULL, 0);
 			printf("%s %d\n", processList[runningIndex].processName, processList[runningIndex].pid);
 			processList[runningIndex].status = DONED;
@@ -58,11 +59,11 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 */
 		unitTime();
 		if(runningIndex != -1){
-			processList[runningIndex].execTime--;
+			processList[runningIndex].leftExecTime--;
 /*
 #ifdef DEBUG
-			if(processList[runningIndex].execTime % 100 == 0){
-				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].execTime);
+			if(processList[runningIndex].leftExecTime % 100 == 0){
+				fprintf(stderr, "process pid = %d, left %d execution sec\n", processList[runningIndex].pid, processList[runningIndex].leftExecTime);
 			}
 #endif
 */
@@ -81,13 +82,46 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 		}
 	}
 	else if(schedulingPolicy == RR){
-		return -1;
+		if(runningIndex == -1){
+			for(int i=0 ; i<processNum ; i++){
+				if(processList[i].status == WAIT)
+					return i;
+			}
+			return -1;
+		}
+		else if(processList[runningIndex].execTime - processList[runningIndex].leftExecTime % 500 == 0){
+			while(1){
+				runningIndex = (runningIndex + 1) % processNum;
+				if(processList[runningIndex].status == WAIT)
+					return runningIndex;
+			}
+		}
 	}
-	else if(schedulingPolicy == SJF){	
-		return -1;
+	else if(schedulingPolicy == SJF){
+		if(runningIndex != -1)
+			return runningIndex;
+		else{
+			int shortestJobIndex = -1;
+			for(int i=0 ; i<processNum ; i++){
+				if(shortestJobIndex == -1 && processList[i].status == WAIT)
+					shortestJobIndex = i;
+				else if(processList[i].status == WAIT && processList[i].leftExecTime < processList[shortestJobIndex].leftExecTime){
+					shortestJobIndex = i;
+				}
+			}
+			return shortestJobIndex;
+		}	
 	}
 	else if(schedulingPolicy == PSJF){	
-		return -1;
+		int shortestJobIndex = -1;
+		for(int i=0 ; i<processNum ; i++){
+			if(shortestJobIndex == -1 && processList[i].status == WAIT)
+				shortestJobIndex = i;
+			else if(processList[i].status == WAIT && processList[i].leftExecTime < processList[shortestJobIndex].leftExecTime){
+				shortestJobIndex = i;
+			}
+		}
+		return shortestJobIndex;
 	}
 	return -1;
 }

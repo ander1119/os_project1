@@ -10,6 +10,7 @@ struct Process{
 	char processName[32];
 	int readyTime;
 	int execTime;
+	int leftExecTime;
 	int pid;
 	int status;
 };
