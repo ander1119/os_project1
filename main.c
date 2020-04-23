@@ -28,9 +28,11 @@ int main(){
 	
 	qsort(processList, processNum, sizeof(struct Process), cmpReadytime);
 
+#ifdef DEBUG
 	fprintf(stderr, "After sort:\n");
 	for(int i=0 ; i<processNum ; i++)
 		fprintf(stderr, "%s %d %d\n", processList[i].processName, processList[i].readyTime, processList[i].execTime);
+#endif
 
 	schedule(processList, processNum, schedulingPolicy);
 	

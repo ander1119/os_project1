@@ -37,7 +37,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 			}
 		}
 
-		if(runningIndex != -1 && processList[runningIndex].leftExecTime == 0){ //the running process ends
+		if(runningIndex != -1 && processList[runningIndex].leftExecTime <= 0){ //the running process ends
 			waitpid(processList[runningIndex].pid, NULL, 0);
 			printf("%s %d\n", processList[runningIndex].processName, processList[runningIndex].pid);
 			processList[runningIndex].status = DONED;
@@ -85,7 +85,7 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 			}
 			return -1;
 		}
-		else if(processList[runningIndex].execTime - processList[runningIndex].leftExecTime % 500 == 0){
+		else if(processList[runningIndex].execTime != processList[runningIndex].leftExecTime && processList[runningIndex].execTime - processList[runningIndex].leftExecTime % 500 == 0){
 			int nextIndex = (runningIndex + 1) % processNum;
 			while(1){
 				if(processList[nextIndex].status == WAIT)
