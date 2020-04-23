@@ -42,6 +42,7 @@ void setLowPriority(int pid){
 		fprintf(stderr, "can't set pid = %d low priority\n", pid);
 		exit(0);
 	}
+	sched_yield();
 }
 
 int initProcess(int execTime){
