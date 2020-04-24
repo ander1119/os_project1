@@ -1,12 +1,18 @@
 #define _GNU_SOURCE
 #include <sys/types.h>
 #include <sys/syscall.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "process.h"
+
+void sigroutine(int dunno){
+	if(dunno == SIGUSR1)
+		exit(0);
+}
 
 void unitTime(){
 	volatile unsigned long i; 
@@ -54,6 +60,7 @@ void setLowPriority(int pid, int whichCPU){
 int initProcess(int execTime){
 	int pid;
 	if((pid = fork()) == 0){
+		signal(SIGUSR1, sigroutine);
 		assignCPU(getpid(), processCPU);
 		unsigned long startSec, startNSec, finishSec, finishNSec;
 		char printkBuffer[40];
@@ -69,11 +76,12 @@ int initProcess(int execTime){
 
 			unitTime();
 		}
+		fprintf(stderr, "pid %d before gettime\n", getpid());
 		syscall(GETTIME, &finishSec, &finishNSec);
 		sprintf(printkBuffer, "[Project1] %d %9lu.%09lu %9lu.%09lu", getpid(), startSec, startNSec, finishSec, finishNSec);
 		syscall(PRINTK, printkBuffer, 100);
 		fprintf(stderr, "pid %d finish\n", getpid());
-		exit(0);
+		while(1);
 	}
 	else{
 		//assignCPU(pid, processCPU);
