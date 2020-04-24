@@ -9,9 +9,11 @@
 #include <string.h>
 #include "process.h"
 
+int gotSignal;
+
 void sigroutine(int dunno){
 	if(dunno == SIGUSR1)
-		exit(0);
+		gotSignal = 1;
 }
 
 void unitTime(){
@@ -58,6 +60,7 @@ void setLowPriority(int pid, int whichCPU){
 }
 
 int initProcess(int execTime){
+	gotSignal = 0;
 	int pid;
 	if((pid = fork()) == 0){
 		signal(SIGUSR1, sigroutine);
@@ -81,7 +84,8 @@ int initProcess(int execTime){
 		sprintf(printkBuffer, "[Project1] %d %9lu.%09lu %9lu.%09lu", getpid(), startSec, startNSec, finishSec, finishNSec);
 		syscall(PRINTK, printkBuffer, 100);
 		fprintf(stderr, "pid %d finish\n", getpid());
-		while(1);
+		while(!gotSignal);
+		exit(0);
 	}
 	else{
 		//assignCPU(pid, processCPU);
