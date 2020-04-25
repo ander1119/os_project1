@@ -1,6 +1,6 @@
 #!/bin/sh
 DIR="OS_PJ1_Test/"
-for FILE in "${DIR}"/*
+for FILE in "${DIR}"*
 do
 	echo $FILE
 done
