@@ -39,6 +39,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 			kill(processList[runningIndex].pid, SIGUSR1);
 			waitpid(processList[runningIndex].pid, NULL, 0);
 			fprintf(stdout, "%s %d\n", processList[runningIndex].processName, processList[runningIndex].pid);
+			fflush(stdout);
 			processList[runningIndex].status = DONED;
 			runningIndex = -1;
 			finishNum++;
