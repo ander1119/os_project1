@@ -87,10 +87,12 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 			}
 			return -1;
 		}
-		else if(processList[runningIndex].execTime != processList[runningIndex].leftExecTime && processList[runningIndex].execTime - processList[runningIndex].leftExecTime % 500 == 0){
-			for(int i=1 ; i<=processNum ; i++)
-				if(processList[(runningIndex+i)%processNum].status == WAIT)
-					return (runningIndex+i) % processNum;
+		else{
+			if(processList[runningIndex].execTime != processList[runningIndex].leftExecTime && (processList[runningIndex].execTime - processList[runningIndex].leftExecTime) % 500 == 0)			{			
+				for(int i=1 ; i<=processNum ; i++)
+					if(processList[(runningIndex+i)%processNum].status == WAIT)
+						return (runningIndex+i) % processNum;
+			}
 		}
 	}
 	else if(schedulingPolicy == SJF){
