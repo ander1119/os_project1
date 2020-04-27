@@ -69,9 +69,9 @@ int initProcess(int execTime){
 	gotSignal = 0;
 	allowExecution = 0;
 	int pid;
+	signal(SIGUSR1, sigroutine);
+	signal(SIGUSR2, sigroutine);
 	if((pid = fork()) == 0){
-		signal(SIGUSR1, sigroutine);
-		signal(SIGUSR2, sigroutine);
 		assignCPU(getpid(), processCPU);
 		unsigned long startSec, startNSec, finishSec, finishNSec;
 		char printkBuffer[40];

@@ -49,7 +49,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 		if(nextIndex != -1 && runningIndex != nextIndex){
 			if(processList[nextIndex].execTime == processList[nextIndex].leftExecTime)
 				kill(processList[nextIndex].pid, SIGUSR2);
-				setHighPriority(processList[nextIndex].pid, processCPU);
+			setHighPriority(processList[nextIndex].pid, processCPU);
 			if(runningIndex != -1)
 				setLowPriority(processList[runningIndex].pid, processCPU);
 			runningIndex = nextIndex;
@@ -88,12 +88,9 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 			return -1;
 		}
 		else if(processList[runningIndex].execTime != processList[runningIndex].leftExecTime && processList[runningIndex].execTime - processList[runningIndex].leftExecTime % 500 == 0){
-			int nextIndex = (runningIndex + 1) % processNum;
-			while(1){
-				if(processList[nextIndex].status == WAIT)
-					return nextIndex;
-				nextIndex = (nextIndex + 1) % processNum;
-			}
+			for(int i=1 ; i<=processNum ; i++)
+				if(processList[(runningIndex+i)%processNum].status == WAIT)
+					return (runningIndex+i) % processNum;
 		}
 	}
 	else if(schedulingPolicy == SJF){
