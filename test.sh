@@ -1,4 +1,7 @@
 #!/bin/sh
+
+# this file is to automatically generate output file
+
 DIR="OS_PJ1_Test/"
 for FILE in "${DIR}"*
 do
