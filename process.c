@@ -11,9 +11,15 @@
 
 int gotSignal;
 
+int allowExecution;
+
 void sigroutine(int dunno){
 	if(dunno == SIGUSR1)
 		gotSignal = 1;
+	else if(dunno == SIGUSR2){
+		allowExecution = 1;
+		signal(SIGUSR2, sigroutine);
+	}
 }
 
 void unitTime(){
@@ -61,22 +67,23 @@ void setLowPriority(int pid, int whichCPU){
 
 int initProcess(int execTime){
 	gotSignal = 0;
+	allowExecution = 0;
 	int pid;
 	if((pid = fork()) == 0){
 		signal(SIGUSR1, sigroutine);
+		signal(SIGUSR2, sigroutine);
 		assignCPU(getpid(), processCPU);
 		unsigned long startSec, startNSec, finishSec, finishNSec;
 		char printkBuffer[40];
-		syscall(GETTIME, &startSec, &startNSec);
-		
+		while(!allowExecution);
 		for(int i=0 ; i<execTime ; i++){
-
+			if(i == 0)
+				syscall(GETTIME, &startSec, &startNSec);
 #ifdef DEBUG
 			if(i % 100 == 0){
 				fprintf(stderr, "pid = %d run %d unit time on %d cpu\n", getpid(), i, sched_getcpu());
 			}
 #endif
-
 			unitTime();
 		}
 		//fprintf(stderr, "pid %d before gettime\n", getpid());

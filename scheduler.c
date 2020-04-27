@@ -46,7 +46,9 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 
 		int nextIndex = nextProcess(processList, processNum, schedulingPolicy);
 		if(nextIndex != -1 && runningIndex != nextIndex){
-			setHighPriority(processList[nextIndex].pid, processCPU);
+			if(processList[nextIndex].execTime == processList[nextIndex].leftExecTime)
+				kill(processList[nextIndex].pid, SIGUSR2);
+				setHighPriority(processList[nextIndex].pid, processCPU);
 			if(runningIndex != -1)
 				setLowPriority(processList[runningIndex].pid, processCPU);
 			runningIndex = nextIndex;
