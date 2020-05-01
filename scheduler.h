@@ -12,7 +12,7 @@
 #define SJF 3
 #define PSJF 4
 
-#define Qlength 100;
+#define Qlength 100
 
 void schedule(struct Process processList[], int processNum, int schedulingPolicy);
 
