@@ -14,10 +14,33 @@ static int runningIndex = -1; 	//which process is running
 
 static int finishNum = 0; 		//how many process has doned
 
+struct Queue{
+	int array[Qlength];
+	int start;
+	int end;
+};
+
+struct Queue Q;
+
+int deQueue(){
+	if(Q.start == Q.end) return -1;
+	int tmp = Q.array[Q.start];
+	Q.start = (Q.start + 1) % Qlength;
+	return tmp;
+}
+
+void enQueue(int idx){
+	Q.array[Q.end] = idx;
+	Q.end = (Q.end + 1) % Qlength;
+}
+
 void schedule(struct Process processList[], int processNum, int schedulingPolicy){
 	for(int i=0 ; i<processNum ; i++) processList[i].status = UNINITIAL; //the process isn't initial yet
 
 	setHighPriority(getpid(), schedulerCPU);	//set scheduler priority higher than others
+
+	Q.start = 0;
+	Q.end = 0;
 
 	while(1){
 		if(finishNum == processNum) 	//all processes end
@@ -29,6 +52,7 @@ void schedule(struct Process processList[], int processNum, int schedulingPolicy
 				processList[i].status = WAIT;
 				processList[i].leftExecTime = processList[i].execTime;
 				setLowPriority(processList[i].pid, processCPU);
+				enQueue(i);
 			}
 			else if(processList[i].readyTime > currentTime){
 				break;
@@ -81,18 +105,14 @@ int nextProcess(struct Process processList[], int processNum, int schedulingPoli
 	}
 	else if(schedulingPolicy == RR){
 		if(runningIndex == -1){
-			for(int i=0 ; i<processNum ; i++){
-				if(processList[i].status == WAIT)
-					return i;
-			}
-			return -1;
+			return deQueue();
+		}
+		else if(processList[runningIndex].execTime != processList[runningIndex].leftExecTime && (processList[runningIndex].execTime - processList[runningIndex].leftExecTime) % 500 == 0){
+			enQueue(runningIndex);
+			return deQueue();
 		}
 		else{
-			if(processList[runningIndex].execTime != processList[runningIndex].leftExecTime && (processList[runningIndex].execTime - processList[runningIndex].leftExecTime) % 500 == 0)			{			
-				for(int i=1 ; i<=processNum ; i++)
-					if(processList[(runningIndex+i)%processNum].status == WAIT)
-						return (runningIndex+i) % processNum;
-			}
+			return runningIndex;
 		}
 	}
 	else if(schedulingPolicy == SJF){
