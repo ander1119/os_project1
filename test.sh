@@ -2,8 +2,8 @@
 
 # this file is to automatically generate output file
 
-DIR="OS_PJ1_Test/"
-for FILE in "${DIR}"*
+DIR="~/OS_PJ1_Test/"
+for FILE in "${DIR}RR"*
 do
 	sudo dmesg -c
 
