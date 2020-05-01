@@ -6,7 +6,7 @@ DIR="OS_PJ1_Test/"
 for FILE in "${DIR}"*
 do
 	sudo dmesg -c
-
+	echo "${FILE}"
 	inputFileName=$(echo $FILE | cut -d '/' -f2 | cut -d '.' -f1)
 	outputFilePath="output/${inputFileName}_stdout.txt"
 	dmesgFilePath="output/${inputFileName}_dmesg.txt"
